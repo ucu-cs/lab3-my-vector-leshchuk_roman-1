@@ -9,6 +9,12 @@
 
 #include "my_vector.h"
 
+struct Test
+{
+    int a;
+    std::string b;
+};
+
 void test_vector()
 {
     // test constructors/assignment operators
@@ -133,7 +139,32 @@ void test_vector()
     }
     assert(vec == checkVec);
 
+    // test emplace_back, resize, constructor with multiple objects
+    my_vector<Test> testVec(10, { 42, "content" });
+    assert(testVec.size() == 10);
+    assert(testVec[7].a == 42);
+    assert(testVec[4].b == "content");
+
+    testVec.emplace_back(123, "another");
+    assert(testVec.back().a == 123);
+    assert(testVec.back().b == "another");
+
+    vec.clear();
+    vec.resize(5, 337);
+    assert((vec == my_vector<int>{ 337, 337, 337, 337, 337 }));
+    vec.resize(3, 234);
+    assert((vec == my_vector<int>{ 337, 337, 337 }));
+    vec.resize(5, 234);
+    assert((vec == my_vector<int>{ 337, 337, 337, 234, 234 }));
+    vec.resize(7);
+    assert((vec == my_vector<int>{ 337, 337, 337, 234, 234, 0, 0 }));
+    vec.resize(4);
+    assert((vec == my_vector<int>{ 337, 337, 337, 234 }));
+    vec.resize(0);
+    assert(vec.is_empty());
+
     // test methods
+    vec = { 1, 2, 3, 42 };
     vec.clear();
     assert(vec.size() == 0);
     assert(vec.capacity() == 0);

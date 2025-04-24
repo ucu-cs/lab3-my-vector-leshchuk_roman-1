@@ -252,6 +252,11 @@ public:
         insert(end(), first, last);
     }
 
+    my_vector(std::size_t n, const T& elem)
+    {
+        resize(n, elem);
+    }
+
     my_vector& operator=(const my_vector& other)
     {
         if (this != &other)
@@ -499,7 +504,7 @@ public:
             }
         }
 
-        new(m_data + m_size++) value_type(std::forward<value_type>(args)...);
+        new(m_data + m_size++) value_type(std::forward<Args>(args)...);
     }
 
     void pop_back()
