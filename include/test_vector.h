@@ -117,6 +117,22 @@ void test_vector()
     assert(*(strArr.cbegin() + 2) == "ccc");
     assert(strArr.cbegin() + 2 == strArr.cend() - 1);
 
+    // test with back_inserter
+    vec = { 1, 2, 3, 4, 5 };
+    firstVec.clear();
+    std::copy(vec.cbegin(), vec.cend(), std::back_inserter(firstVec));
+    assert((firstVec == my_vector<int>{ 1, 2, 3, 4, 5 }));
+
+    // test push_back reference with possible reallocation
+    int lastVecElem = vec.back();
+    my_vector<int> checkVec = vec;
+    for (std::size_t i = 0; i < 100; ++i)
+    {
+        checkVec.push_back(lastVecElem);
+        vec.push_back(vec.back());
+    }
+    assert(vec == checkVec);
+
     // test methods
     vec.clear();
     assert(vec.size() == 0);
